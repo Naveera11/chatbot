@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coastal Calm Chatbot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(rgba(250, 243, 224, 0.9), rgba(173, 216, 230, 0.9)),
+        url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 480px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      padding: 25px;
+      backdrop-filter: blur(10px);
+    }
+
+    h2 {
+      text-align: center;
+      font-family: 'Pacifico', cursive;
+      color: #4DA8DA;
+      margin-bottom: 20px;
+    }
+
+    .chat-box {
+      height: 360px;
+      overflow-y: auto;
+      background-color: #FAF3E0;
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    .user-message, .bot-message {
+      margin: 8px 0;
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    .user-message {
+      background-color: #ffffff;
+      color: #333;
+      float: right;
+      clear: both;
+    }
+
+    .bot-message {
+      background-color: #A8E6CF;
+      color: #333;
+      float: left;
+      clear: both;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      flex-grow: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      font-size: 15px;
+    }
+
+    button {
+      padding: 12px 16px;
+      background-color: #4DA8DA;
+      border: none;
+      border-radius: 15px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #3a92bb;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h2>Coastal Calm Chatbot 🌊</h2>
+    <div class="chat-box" id="chatBox">
+      <div class="bot-message">Hi there! I'm here for you. Just type how you feel today 💬</div>
+    </div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Type how you feel...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- 🔊 Working Sound Effects -->
+  <audio id="sendSound">
+    <source src="https://cdn.jsdelivr.net/gh/napthedev/assets/sounds/pop.mp3" type="audio/mp3">
+  </audio>
+  <audio id="replySound">
+    <source src="https://cdn.jsdelivr.net/gh/napthedev/assets/sounds/soft-tone.mp3" type="audio/mp3">
+  </audio>
+  <audio id="bgWaves" loop autoplay muted>
+    <source src="https://cdn.pixabay.com/download/audio/2021/10/15/audio_95ff95833d.mp3?filename=waves-on-the-seashore-ambient-111233.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- 🌙 Volume Control for Background Waves (Optional) -->
+  <script>
+    window.addEventListener('click', () => {
+      document.getElementById("bgWaves").muted = false;
+    }, { once: true });
+  </script>
+
+  <script>
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (message === "") return;
+
+      const chatBox = document.getElementById("chatBox");
+
+      const userMsg = document.createElement("div");
+      userMsg.className = "user-message";
+      userMsg.textContent = "You: " + message;
+      chatBox.appendChild(userMsg);
+
+      document.getElementById("sendSound").play();
+
+      const msg = message.toLowerCase();
+      const botMsg = document.createElement("div");
+      botMsg.className = "bot-message";
+
+      if (msg.includes("hurt myself") || msg.includes("suicide") || msg.includes("end it all") || msg.includes("no reason to live")) {
+        botMsg.textContent = "AI: I'm truly concerned about what you shared. Please, talk to someone you trust or a professional. You matter deeply. 💛 Reach out to a helpline if needed.";
+      } else if (msg.includes("midterm") || msg.includes("case study") || msg.includes("assignment") || msg.includes("exam") || msg.includes("university")) {
+        botMsg.textContent = "AI: I understand how stressful academics can be. Remember to take breaks and go easy on yourself. You're doing your best 💪📘.";
+      } else if (msg.includes("stressed") || msg.includes("tired") || msg.includes("overwhelmed") || msg.includes("burned out")) {
+        botMsg.textContent = "AI: It’s okay to feel overwhelmed. Even waves need time to settle 🌊. Take a pause, breathe, and rest. You’ve got this.";
+      } else if (msg.includes("sad") || msg.includes("down") || msg.includes("depressed") || msg.includes("lonely") || msg.includes("upset")) {
+        botMsg.textContent = "AI: I’m really sorry you feel this way. The sea gets rough but it always calms. You're not alone. 🌤️ Let’s take it one tide at a time.";
+      } else if (msg.includes("happy") || msg.includes("good") || msg.includes("better") || msg.includes("relieved") || msg.includes("grateful")) {
+        botMsg.textContent = "AI: That’s beautiful to hear 🌈 Celebrate your wins, no matter how small. Keep spreading that light! 🌟";
+      } else {
+        botMsg.textContent = "AI: Thank you for sharing with me 🤍. Your feelings are important. I’m here to listen and support you.";
+      }
+
+      chatBox.appendChild(botMsg);
+      document.getElementById("replySound").play();
+      input.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
+
